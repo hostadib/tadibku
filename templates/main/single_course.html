@@ -1,0 +1,319 @@
+{% extends 'base.html' %}
+{% block title %}Kursus{% endblock %}
+{% load static %}
+{% block content %}
+{% load course_tags %}
+
+<script>
+$(document).ready(function() {
+
+    $(".filter-checkbox").on('click', function() {
+        var filter_object = {};
+        $(".filter-checkbox").each(function(index, ele) {
+            var filter_value = $(this).val();
+            var filter_key = $(this).data('filter');
+            console.log(filter_key, filter_value);
+            filter_object[filter_key] = Array.from(document.querySelectorAll('input[data-filter=' + filter_key + ']:checked')).map(function(el) {
+                return el.value;
+            });
+        });
+
+        $.ajax({
+            url: '{% url 'filter_data' %}',
+            data: filter_object,
+            dataType: 'json',
+            success: function(res) {
+                console.log(res);
+                $("#filteredCourses").html(res.data);
+                var filter_value = $(this).val();
+                var filter_key = $(this).data('filter');
+            }
+        });
+    });
+});
+
+
+</script>
+
+<!-- PAGE TITLE
+================================================== -->
+<header class="page-title pt-large pt-dark pt-plax-lg-dark">
+
+    <div class="container text-center py-xl-2">
+        <h2 class=" fw-semi-bold mb-0">Kursus Yang Tersedia</h2>
+
+    </div>
+    <!-- Img -->
+</header>
+
+
+<!-- CONTROL BAR
+================================================== -->
+<div class="container mb-6 mb-xl-8 z-index-2">
+    <div class="d-lg-flex align-items-center mb-6 mb-xl-0">
+        <p class="mb-lg-0">Terdapat <span class="text-dark"> {{course.all.count}} Kursus</span> tersedia untukmu</p>
+        <div class="ms-lg-auto d-lg-flex flex-wrap">
+            <div class="mb-4 mb-lg-0 ms-lg-6">
+                <div class="border rounded d-flex align-items-center choices-label h-50p">
+                    <span class="ps-5">Sort by:</span>
+                    <select class="form-select form-select-sm text-dark border-0 ps-1 bg-transparent flex-grow-1 shadow-none dropdown-menu-end"
+                            data-choices>
+                        <option>Default</option>
+                        <option>New Courses</option>
+                        <option>Price Low to High</option>
+                        <option>Price High to low</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- COURSE LIST V2
+================================================== -->
+<div class="container">
+    <div class="row">
+        <div class="col-xl-4 mb-5 mb-xl-0">
+            <!-- SIDEBAR FILTER
+            ================================================== -->
+            <div class=" vertical-scroll" id="courseSidebar">
+                <div class="border rounded mb-6 @@widgetBG">
+                    <!-- Heading -->
+                    <div id="coursefilter1">
+                        <h4 class="mb-0">
+                            <button class="p-6 text-dark fw-medium d-flex align-items-center collapse-accordion-toggle line-height-one"
+                                    type="button" data-bs-toggle="collapse" data-bs-target="#coursefiltercollapse1"
+                                    aria-expanded="true" aria-controls="coursefiltercollapse1">
+                                Category
+                                <span class="ms-auto text-dark d-flex">
+                                        <!-- Icon -->
+                                        <svg width="15" height="2" viewBox="0 0 15 2" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <rect width="15" height="2" fill="currentColor"/>
+                                        </svg>
+
+                                        <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0 7H15V9H0V7Z" fill="currentColor"/>
+                                            <path d="M6 16L6 8.74228e-08L8 0L8 16H6Z" fill="currentColor"/>
+                                        </svg>
+
+                                    </span>
+                            </button>
+                        </h4>
+                    </div>
+
+                    <div id="coursefiltercollapse1" class="collapse show mt-n2 px-6 pb-6"
+                         aria-labelledby="coursefilter1" data-parent="#courseSidebar">
+                        <ul class="list-unstyled list-group list-checkbox">
+                            {% for i in category %}
+                            <li class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input filter-checkbox"
+                                       id="category-{{i.id}}" data-filter="category" value="{{i.id}}">
+                                <label class="custom-control-label font-size-base" for="category-{{i.id}}">{{i.name}}
+                                    ({{i.course_set.all.count}})</label>
+                                {% endfor %}
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="border rounded mb-6 bg-white">
+                    <!-- Heading -->
+                    <div id="coursefilter2">
+                        <h4 class="mb-0">
+                            <button class="p-6 text-dark fw-medium d-flex align-items-center collapse-accordion-toggle line-height-one"
+                                    type="button" data-bs-toggle="collapse" data-bs-target="#coursefiltercollapse2"
+                                    aria-expanded="true" aria-controls="coursefiltercollapse2">
+                                Instructors
+                                <span class="ms-auto text-dark d-flex">
+                                        <!-- Icon -->
+                                        <svg width="15" height="2" viewBox="0 0 15 2" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <rect width="15" height="2" fill="currentColor"/>
+                                        </svg>
+
+                                        <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0 7H15V9H0V7Z" fill="currentColor"/>
+                                            <path d="M6 16L6 8.74228e-08L8 0L8 16H6Z" fill="currentColor"/>
+                                        </svg>
+
+                                    </span>
+                            </button>
+                        </h4>
+                    </div>
+
+                    <div id="coursefiltercollapse2" class="collapse show mt-n2 px-6 pb-6"
+                         aria-labelledby="coursefilter2" data-parent="#courseSidebar">
+                        <!-- Search -->
+                        <form class="mb-4">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm border-end-0 shadow-none" type="search"
+                                       placeholder="Search" aria-label="Search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm btn-outline-white border-start-0 text-dark bg-transparent"
+                                            type="submit">
+                                        <!-- Icon -->
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M8.80758 0C3.95121 0 0 3.95121 0 8.80758C0 13.6642 3.95121 17.6152 8.80758 17.6152C13.6642 17.6152 17.6152 13.6642 17.6152 8.80758C17.6152 3.95121 13.6642 0 8.80758 0ZM8.80758 15.9892C4.8477 15.9892 1.62602 12.7675 1.62602 8.80762C1.62602 4.84773 4.8477 1.62602 8.80758 1.62602C12.7675 1.62602 15.9891 4.8477 15.9891 8.80758C15.9891 12.7675 12.7675 15.9892 8.80758 15.9892Z"
+                                                  fill="currentColor"/>
+                                            <path d="M19.762 18.6121L15.1007 13.9509C14.7831 13.6332 14.2687 13.6332 13.9511 13.9509C13.6335 14.2682 13.6335 14.7831 13.9511 15.1005L18.6124 19.7617C18.7712 19.9205 18.9791 19.9999 19.1872 19.9999C19.395 19.9999 19.6032 19.9205 19.762 19.7617C20.0796 19.4444 20.0796 18.9295 19.762 18.6121Z"
+                                                  fill="currentColor"/>
+                                        </svg>
+
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <ul class="list-unstyled list-group list-checkbox list-checkbox-limit">
+                            {% for cat in authors %}
+                            <li class="custom-control custom-checkbox">
+                                <!-- id ditambahkan dengan forloop.counter untuk memastikan id unik -->
+                                <input type="checkbox" class="custom-control-input"
+                                       id="instructorscustomcheck{{ forloop.counter }}">
+                                <!-- atribut for pada label ditambahkan dengan forloop.counter untuk memastikan kesesuaian dengan id dari input -->
+                                <label class="custom-control-label font-size-base"
+                                       for="instructorscustomcheck{{ forloop.counter }}">{{cat.name}}
+                                    ({{cat.course_count}})</label>
+                            </li>
+                            {% endfor %}
+                        </ul>
+
+                    </div>
+                </div>
+
+
+                <div class="border rounded mb-6 @@widgetBG">
+                    <!-- Heading -->
+                    <div id="coursefilter3">
+                        <h4 class="mb-0">
+                            <button class="p-6 text-dark fw-medium d-flex align-items-center collapse-accordion-toggle line-height-one"
+                                    type="button" data-bs-toggle="collapse" data-bs-target="#coursefiltercollapse3"
+                                    aria-expanded="true" aria-controls="coursefiltercollapse3">
+                                Price
+                                <span class="ms-auto text-dark d-flex">
+                                        <!-- Icon -->
+                                        <svg width="15" height="2" viewBox="0 0 15 2" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <rect width="15" height="2" fill="currentColor"/>
+                                        </svg>
+
+                                        <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0 7H15V9H0V7Z" fill="currentColor"/>
+                                            <path d="M6 16L6 8.74228e-08L8 0L8 16H6Z" fill="currentColor"/>
+                                        </svg>
+
+                                    </span>
+                            </button>
+                        </h4>
+                    </div>
+
+                    <div id="coursefiltercollapse3" class="collapse show mt-n2 px-6 pb-6"
+                         aria-labelledby="coursefilter3" data-parent="#courseSidebar">
+                        <ul class="list-unstyled list-group list-checkbox">
+                            <li class="custom-control custom-radio">
+                                <input type="radio" id="price-1" name="customRadio"
+                                       class="custom-control-input filter-checkbox" value="priceall"
+                                       data-filter="price">
+                                <label class="custom-control-label font-size-base" for="price-1">Semua Kursus
+                                    ({{course.all.count}})</label>
+                            </li>
+                            <li class="custom-control custom-radio">
+                                <input type="radio" id="price-2" name="customRadio"
+                                       class="custom-control-input filter-checkbox" value="pricefree"
+                                       data-filter="price">
+                                <label class="custom-control-label font-size-base" for="price-2">Gratis
+                                    ({{freecourse}})</label>
+                            </li>
+                            <li class="custom-control custom-radio">
+                                <input type="radio" id="price-3" name="customRadio"
+                                       class="custom-control-input filter-checkbox" value="pricepaid"
+                                       data-filter="price">
+                                <label class="custom-control-label font-size-base" for="price-3">Berbayar
+                                    ({{paidcourse}})</label>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="border rounded mb-6 @@widgetBG">
+                    <!-- Heading -->
+                    <div id="coursefilter4">
+                        <h4 class="mb-0">
+                            <button class="p-6 text-dark fw-medium d-flex align-items-center collapse-accordion-toggle line-height-one"
+                                    type="button" data-bs-toggle="collapse" data-bs-target="#coursefiltercollapse4"
+                                    aria-expanded="true" aria-controls="coursefiltercollapse4">
+                                Level
+                                <span class="ms-auto text-dark d-flex">
+                                        <!-- Icon -->
+                                        <svg width="15" height="2" viewBox="0 0 15 2" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <rect width="15" height="2" fill="currentColor"/>
+                                        </svg>
+
+                                        <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0 7H15V9H0V7Z" fill="currentColor"/>
+                                            <path d="M6 16L6 8.74228e-08L8 0L8 16H6Z" fill="currentColor"/>
+                                        </svg>
+
+                                    </span>
+                            </button>
+                        </h4>
+                    </div>
+
+                    <div id="coursefiltercollapse4" class="collapse show mt-n2 px-6 pb-6"
+                         aria-labelledby="coursefilter4" data-parent="#courseSidebar">
+                        <ul class="list-unstyled list-group list-checkbox">
+                            {% for i in level %}
+                            <li class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input filter-checkbox" id="level-{{i.id}}"
+                                       value="{{i.id}}" data-filter="level">
+                                <label class="custom-control-label font-size-base" for="level-{{i.id}}">{{i.name}}
+                                    ({{i.course_set.all.count}})</label>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+
+                <a href="#" class="btn btn-primary btn-block mb-10">FILTER HASIL</a>
+            </div>
+
+        </div>
+
+        <div class="col-xl-8">
+            <div class="row row-cols-md-2 mb-3 " id="filteredCourses">
+                {% include 'ajax/course.html' %}
+            </div>
+
+            <!-- PAGINATION
+            ================================================== -->
+            <nav class="mb-11" aria-label="Page navigationa">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true"><i class="fas fa-arrow-left"></i></span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

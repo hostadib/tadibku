@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Pembayaran Berhasil{% endblock %}
+
+{% block content %}
+
+<section class="py-6 py-md-12 position-relative" style="background-color: #cdced4;">
+    <header class="d-flex justify-content-center align-items-center">
+        <h1>Selamat Kamu Sudah Terdaftar Sebagai Siswa HOMESCHOOLING Tadib</h1>
+    </header>
+
+    <div class="container" style="margin-bottom: 50px;">
+
+        <h4>Alhamdulillah KAMU berhasil mendaftar dengan ID transaksi : {{transaction_id}}</h4>
+
+        <h5 style="color: black;">Selanjutnya, untuk dapat mengakses halaman MY CLASS lakukan pembayaran sebesar Rp 1.700.000 di bank
+            berikut:</h5>
+        <div class="row justify-content-center"> <!-- inisialisasi baris -->
+            <div class="col-md-4"> <!-- inisialisasi kolom -->
+                <div class="card"> <!-- Card bootstrap untuk setiap item -->
+                    <img src="{% static 'assets/img/bank/BSI.png' %}" class="card-img-top mx-auto d-block"
+                         alt="Logo Bank BSI">
+                    <div class="card-body">
+                        <h6 class="card-title">An: PT TADIB INDONESIA SEJAHTERA </h6>
+                        <h4 class="card-title">No. Rek: 5880055880</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 style="color: black;">Setelah itu, silakan kirim bukti transfer ke WhatsApp Admin: 082220756499 atau
+            082194642561.</h5>
+        <div class="d-flex justify-content-center align-items-center">
+            <a href="https://wa.me/+6282194642561" class="btn btn-success " target="_blank">Link WhatsApp</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

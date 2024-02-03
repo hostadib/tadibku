@@ -1,0 +1,20 @@
+{% extends 'base.hmtl' %}
+{% block title %} Payment Fail {% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 text-center">
+            <img src="{% static 'failure.png' %}" alt="Failure" class="img-fluid mb-4">
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">Payment Failed</h4>
+                <p>Sorry, your payment failed. Please try again.</p>
+                <hr>
+                <p class="mb-0">Whenever you need to, be sure to logout from your account.</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <a href="{% url 'home' %}" class="btn btn-primary">Go to Home</a>
+    </div>
+
+</div>

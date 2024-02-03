@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block title %}Blog Posts{% endblock %}
+{% load course_tags %}
+{% load static %}
+{% block content %}
+
+<script>
+$(document).ready(function() {
+    $(".filter-checkbox").on('click', function() {
+        var filter_object = {};
+        $(".filter-checkbox").each(function(index, ele) {
+            var filter_value = $(this).val();
+            var filter_key = $(this).data('filter');
+            console.log(filter_key, filter_value);
+            filter_object[filter_key] = Array.from(document.querySelectorAll('input[data-filter=' + filter_key + ']:checked')).map(function(el) {
+                return el.value;
+            });
+        });
+
+        $.ajax({
+            url: '{% url 'filter_data' %}',
+            method: 'GET',
+            data: filter_object,
+            dataType: 'json',
+            success: function(res) {
+                console.log(res);
+                // Handle the filtered data, e.g., update the DOM
+            },
+            error: function(err) {
+                console.error(err);
+            }
+        });
+    });
+});
+</script>
+
+
+<!---List Kegiatan -->
+<section class="py-6 py-md-12 position-relative" style="background-color: #E8F8FB;">
+    <div class="container mb-11">
+        <h2 class="text-center mb-5">List Kegiatan</h2>
+        <div class="row">
+            <div class="col-md-7 col-lg-8 mb-5 mb-md-0">
+                <div class="row row-cols-md-2"> <!-- Mengubah dari 2 menjadi 3 untuk menampilkan 3 kolom dalam satu baris -->
+                    {% for event in events %}
+                    <div class="col-md">
+                        <!-- Event Card -->
+                        <div class="card">
+                            <!-- Image -->
+                            <div class="card-zoom position-relative">
+                                <a href="{{ event.get_absolute_url }}" class="card-img d-block sk-thumbnail img-ratio-3">
+                                    <img class="rounded shadow-light-lg img-fluid" src="{{ event.cover_event.url }}" alt="...">
+                                </a>
+                                <a href="{{ event.get_absolute_url }}" class="badge sk-fade-bottom badge-lg badge-purple badge-pill badge-float bottom-0 left-0 mb-4 ms-4 px-5 me-4">
+                                    <span class="text-white fw-normal font-size-sm">{{ event.category.name }}</span>
+                                </a>
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="card-footer py-4 px-0">
+                                <a href="{{ event.get_absolute_url }}" class="d-block">
+                                    <h3 class="text-center">{{ event.title }}</h3>
+                                </a>
+
+                                <ul class="nav mx-n3 mb-3 justify-content-center">
+                                    <li class="nav-item px-3">
+                                        <a href="{{ event.get_absolute_url }}" class="d-flex align-items-center">
+                                            <div class="me-3 d-flex text-secondary icon-uxs">
+                                                <!-- Icon -->
+                                                <i class="fas fa-calendar-alt" style="color: blue"></i>
+                                            </div>
+                                            <div class="font-size-sm text-black-800">{{ event.date|date:"F d, Y" }}</div>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item px-3">
+                                        <a href="{{ event.get_absolute_url }}" class="d-flex align-items-center">
+                                            <div class="me-3 d-flex text-secondary icon-uxs">
+                                                <!-- Icon -->
+                                                <i class="fas fa-map-marker-alt" style="color: red"></i>
+                                            </div>
+                                            <div class="font-size-sm text-black-800">{{ event.location }}</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- PAGINATION
+                ================================================== -->
+                <nav class="mt-8" aria-label="Page navigationa">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true"><i class="fas fa-arrow-left"></i></span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+
+            <div class="col-md-5 col-lg-4">
+                <!-- BLOG SIDEBAR
+                ================================================== -->
+                <div class="">
+                    <div class="border rounded mb-6">
+                        <div class="input-group">
+                            <input class="form-control form-control-sm border-0 pe-0" type="search" placeholder="Search"
+                                   aria-label="Search">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm my-2 my-sm-0 text-secondary icon-uxs" type="submit">
+                                    <!-- Icon -->
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8.80758 0C3.95121 0 0 3.95121 0 8.80758C0 13.6642 3.95121 17.6152 8.80758 17.6152C13.6642 17.6152 17.6152 13.6642 17.6152 8.80758C17.6152 3.95121 13.6642 0 8.80758 0ZM8.80758 15.9892C4.8477 15.9892 1.62602 12.7675 1.62602 8.80762C1.62602 4.84773 4.8477 1.62602 8.80758 1.62602C12.7675 1.62602 15.9891 4.8477 15.9891 8.80758C15.9891 12.7675 12.7675 15.9892 8.80758 15.9892Z"
+                                              fill="currentColor"/>
+                                        <path d="M19.762 18.6121L15.1007 13.9509C14.7831 13.6332 14.2687 13.6332 13.9511 13.9509C13.6335 14.2682 13.6335 14.7831 13.9511 15.1005L18.6124 19.7617C18.7712 19.9205 18.9791 19.9999 19.1872 19.9999C19.395 19.9999 19.6032 19.9205 19.762 19.7617C20.0796 19.4444 20.0796 18.9295 19.762 18.6121Z"
+                                              fill="currentColor"/>
+                                    </svg>
+
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="coursefiltercollapse1" class="collapse show mt-n2 px-6 pb-6"
+                         aria-labelledby="coursefilter1" data-parent="#courseSidebar">
+                        <h4 class="mb-5">Kategori Kagiatan</h4>
+
+                       <ul class="list-unstyled list-group list-checkbox">
+                            {% for i in category %}
+                            <li class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input filter-checkbox"
+                                       id="category-{{i.id}}" data-filter="category" value="{{i.id}}">
+                                <label class="custom-control-label font-size-base" for="category-{{i.id}}">{{i.name}}
+                                    ({{i.event_set.all.count}})</label>
+                                {% endfor %}
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <div class="border rounded mb-6 p-5 py-md-6 ps-md-6 pe-md-4">
+                        <h4 class="mb-5">Kegiatan Terbaru dan Akan</h4>
+                        <ul class="list-unstyled mb-0">
+                            {% for k in recent_event %}
+                                <li class="media mb-6 d-flex">
+                                    <a href="" class="mw-70p d-block me-5">
+                                        <img src="{{ k.speaker_image.url }}" alt="..." class="avatar-img rounded-lg h-70p o-f-c">
+                                    </a>
+                                    <div class="media-body flex-shrink-1">
+                                        <a href="{{ k.get_absolute_url }}" class="d-block">
+                                            <h6 class="line-clamp-2 mb-1 fw-normal">{{ k.title }}</h6>
+                                        </a>
+                                        <span>{{ k.date }}</span>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="border rounded mb-6 p-5 py-md-6 ps-md-6 pe-md-4">
+                        <h4 class="mb-5">Tags</h4>
+                        <a href="blog-grid-v2.html" class="btn btn-sm btn-light text-gray-800 px-5 fw-normal me-1 mb-2">Course</a>
+                        <a href="blog-grid-v2.html" class="btn btn-sm btn-light text-gray-800 px-5 fw-normal me-1 mb-2">Timeline</a>
+                        <a href="blog-grid-v2.html" class="btn btn-sm btn-light text-gray-800 px-5 fw-normal me-1 mb-2">Moodle</a>
+                        <a href="blog-grid-v2.html" class="btn btn-sm btn-light text-gray-800 px-5 fw-normal me-1 mb-2">Best</a>
+                        <a href="blog-grid-v2.html" class="btn btn-sm btn-light text-gray-800 px-5 fw-normal me-1 mb-2">Info</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

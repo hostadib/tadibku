@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+{% load course_tags %}
+{% load static %}
+{% block content %}
+
+
+<!-- PAGE TITLE
+    ================================================== -->
+    <header class="py-8 py-md-10" style="background-image: none;">
+        <div class="container text-center py-xl-2">
+            <h1 class="display-4 fw-semi-bold mb-0">FORMULIR PENDAFTARAN SISWA BARU SMA</h1>
+
+        </div>
+        <!-- Img -->
+        <img class="d-none img-fluid" src="...html" alt="...">
+    </header>
+
+
+
+    <!-- SHOP CHECKOUT
+    ================================================== -->
+
+<div class="container pb-6 pb-xl-10">
+    <form name="pendaftaran_siswa_baru" method="post" class="pendaftaran_siswa_baru woocommerce-checkout" action="?action=create_registration" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="col2-set" id="customer_details">
+            <div class="col-1">
+                <div class="woocommerce-billing-fields">
+                    <h3>A. INFORMASI PRIBADI</h3>
+                    <div class="woocommerce-billing-fields__field-wrapper">
+                        <!-- Nama Lengkap -->
+                        <p class="form-row form-row-wide validate-required name-field" id="billing_address_1_field" data-priority="50">
+                            <label for="nama_lengkap" class="">Nama Lengkap <abbr class="required"
+                                                                                  title="required">*</abbr></label>
+                            <input type="text" class="input-text" name="nama_lengkap" id="nama_lengkap"
+                                   autocomplete="name" >
+                        </p>
+
+                        <p class="form-row form-row-wide validate-required lahir-field" id="billing_address_2_field" data-priority="50">
+                            <label for="tempat_tanggal_lahir" class="">Tempat, Tanggal Lahir <abbr class="required"
+                                                                                                   title="required">*</abbr></label>
+                            <input type="text" class="input-text" name="tempat_tanggal_lahir" id="tempat_tanggal_lahir">
+                        </p>
+
+                        <p class="form-row form-row-wide">
+                            <label for="agama" class="">Agama <abbr class="required" title="required">*</abbr></label>
+                            <input type="text" class="input-text" name="agama" id="agama">
+                        </p>
+
+                        <p class="form-row form-row-wide address-field validate-required" id="billing_address_3_field" data-priority="50">
+                                <label for="billing_address_1" class="">Alamat <abbr class="required" title="required">*</abbr></label>
+                                <input type="text" class="input-text " name="billing_address_1" id="billing_address_1" placeholder="Jl ...." value="" autocomplete="address-line1">
+                        </p>
+
+                        <p class="form-row form-row-wide address-field validate-required" id="billing_city1_field" data-priority="70" data-o_class="form-row form-row-wide address-field validate-required">
+                                <label for="billing_city" class="">Provinsi <abbr class="required" title="required">*</abbr></label>
+                                <input type="text" class="input-text " name="billing_city" id="billing_city" placeholder="" value="" autocomplete="address-level2">
+                        </p>
+                        <p class="form-row form-row-wide address-field validate-required" id="billing_city_field" data-priority="70" data-o_class="form-row form-row-wide address-field validate-required">
+                                <label for="billing_city" class="">Kabupaten / Kota <abbr class="required" title="required">*</abbr></label>
+                                <input type="text" class="input-text " name="billing_city" id="billing_city1" placeholder="" value="" autocomplete="address-level2">
+                        </p>
+                        <p class="form-row form-row-wide address-field validate-state" id="billing_state_field" data-priority="80" data-o_class="form-row form-row-wide address-field validate-state">
+                                <label for="billing_state" class="">Kecamatan</label>
+                                <input type="text" class="input-text " value="" placeholder="" name="billing_state" id="billing_state" autocomplete="address-level1">
+                        </p>
+                        <p class="form-row form-row-wide address-field validate-postcode validate-required" id="billing_postcode_field" data-priority="90" data-o_class="form-row form-row-wide address-field validate-required validate-postcode">
+                                <label for="billing_postcode" class="">Kode Poss <abbr class="required" title="required">*</abbr></label>
+                                <input type="text" class="input-text " name="billing_postcode" id="billing_postcode" placeholder="" value="" autocomplete="postal-code">
+                        </p>
+
+
+                        <p class="form-row form-row-wide">
+                            <label for="jenis_kelamin" class="">Jenis Kelamin <abbr class="required"
+                                                                                    title="required">*</abbr></label>
+                            <select name="jenis_kelamin" id="jenis_kelamin">
+                                <option value="laki-laki">Laki-laki</option>
+                                <option value="perempuan">Perempuan</option>
+                            </select>
+                        </p>
+
+                        <p class="form-row form-row-wide">
+                            <label for="nomor_telepon" class="">Nomor Telepon/HP <abbr class="required"
+                                                                                       title="required">*</abbr></label>
+                            <input type="tel" class="input-text" name="nomor_telepon" id="nomor_telepon">
+                        </p>
+                    </div>
+                </div>
+
+                <div class="woocommerce-billing-fields">
+                    <h3>B. INFORMASI ORANG TUA/WALI</h3>
+                    <div class="woocommerce-billing-fields__field-wrapper">
+                        <p class="form-row form-row-first validate-required">
+                            <label for="nama_ayah" class="">Nama Ayah <abbr class="required"
+                                                                            title="required">*</abbr></label>
+                            <input type="text" class="input-text" name="nama_ayah" id="nama_ayah">
+                        </p>
+                        <p class="form-row form-row-wide">
+                            <label for="pekerjaan_ayah" class="">Pekerjaan Ayah <abbr class="required" title="required">*</abbr></label>
+                            <input type="text" class="input-text" name="pekerjaan_ayah" id="pekerjaan_ayah">
+                        </p>
+                        <p class="form-row form-row-first validate-required">
+                            <label for="nama_ibu" class="">Nama Ibu <abbr class="required"
+                                                                          title="required">*</abbr></label>
+                            <input type="text" class="input-text" name="nama_ibu" id="nama_ibu">
+                        </p>
+                        <p class="form-row form-row-wide">
+                            <label for="pekerjaan_ibu" class="">Pekerjaan Ibu <abbr class="required"
+                                                                                    title="required">*</abbr></label>
+                            <input type="text" class="input-text" name="pekerjaan_ibu" id="pekerjaan_ibu">
+                        </p>
+                        <p class="form-row form-row-first">
+                            <label for="nama_wali" class="">Nama Wali (jika ada)</label>
+                            <input type="text" class="input-text" name="nama_wali" id="nama_wali">
+                        </p>
+                        <p class="form-row form-row-wide">
+                            <label for="pekerjaan_wali" class="">Pekerjaan Wali (jika ada)</label>
+                            <input type="text" class="input-text" name="pekerjaan_wali" id="pekerjaan_wali">
+                        </p>
+                        <p class="form-row form-row-wide">
+                            <label for="alamat_ortu" class="">Alamat Orang Tua/Wali <abbr class="required"
+                                                                                          title="required">*</abbr></label>
+                            <input type="text" class="input-text" name="alamat_ortu" id="alamat_ortu">
+                        </p>
+                        <p class="form-row form-row-wide">
+                            <label for="nomor_telepon_ortu" class="">Nomor Telepon/HP Orang Tua/Wali <abbr
+                                    class="required" title="required">*</abbr></label>
+                            <input type="tel" class="input-text" name="nomor_telepon_ortu" id="nomor_telepon_ortu">
+                        </p>
+                    </div>
+                </div>
+
+                <div class="woocommerce-billing-fields">
+                    <h3>C. PENDIDIKAN SEBELUMNYA</h3>
+                    <div class="woocommerce-billing-fields__field-wrapper">
+                        <p class="form-row form-row-first validate-required">
+                            <label for="nama_smp" class="">Nama SMP <abbr class="required"
+                                                                          title="required">*</abbr></label>
+                            <input type="text" class="input-text" name="nama_smp" id="nama_smp">
+                        </p>
+                        <p class="form-row form-row-wide">
+                            <label for="alamat_smp" class="">Alamat SMP <abbr class="required" title="required">*</abbr></label>
+                            <input type="text" class="input-text" name="alamat_smp" id="alamat_smp">
+                        </p>
+                        <p class="form-row form-row-wide">
+                            <label for="tahun_lulus" class="">Tahun Lulus <abbr class="required"
+                                                                                title="required">*</abbr></label>
+                            <input type="text" class="input-text" name="tahun_lulus" id="tahun_lulus">
+                        </p>
+                        <p class="form-row form-row-wide">
+                            <label for="nilai_smp" class="">Rata-Rata Nilai Raport SMP <abbr class="required"
+                                                                                             title="required">*</abbr></label>
+                            <input type="text" class="input-text" name="nilai_smp" id="nilai_smp">
+                        </p>
+                    </div>
+                </div>
+                <div class="woocommerce-billing-fields">
+                    <h3>C. PILIHAN JURUSAN DAN KETERAMPILAN</h3>
+                    <div class="woocommerce-billing-fields__field-wrapper">
+                        <div class="form-row form-row-first validate-required" style="color: black;">
+                            <label class="">Jurusan <abbr class="required" title="required">*</abbr></label>
+                            <ol id="jurusan" name="jurusan" style="list-style-type: none;">
+                                <li><input type="checkbox" name="jurusan" value="IPA"> IPA</li>
+                                <li><input type="checkbox" name="jurusan" value="IPS"> IPS</li>
+                                <li><input type="checkbox" name="jurusan" value="BAHASA"> Bahasa</li>
+                            </ol>
+                        </div>
+                        <div class="form-row form-row-first validate-required" style="color: black;">
+                            <label class="">Keterampilan <abbr class="required" title="required">*</abbr></label>
+                            <ol id="keterampilan" name="keterampilan" style="list-style-type: none;">
+                                <li><input type="checkbox" name="keterampilan" value="pemrograman"> Pemograman Komputer</li>
+                                <li><input type="checkbox" name="keterampilan" value="tekniklas"> Teknik Las Industri</li>
+                                <li><input type="checkbox" name="keterampilan" value="ai"> Artificial Inteligent</li>
+                                <li><input type="checkbox" name="keterampilan" value="ai"> Wirausaha</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="woocommerce-billing-fields">
+                    <h3>D. DOCUMENT YANG HARUS DIUPLOAD</h3>
+                    <p class="text" style="color: black;">Upload dokument dengan ukuran maks 100kb dan tipe file pdf/.jpg/.jpeg atau .png</p>
+                    <ul style="list-style-type: none;">
+                        <li>
+                            <label for="ijazah">1. Fotokopi Ijazah SMP</label>
+                            <input type="file" id="ijazah" name="ijazah">
+                        </li>
+                        <li>
+                            <label for="raport">2. Fotokopi raport SMP</label>
+                            <input type="file" id="raport" name="raport">
+                        </li>
+                        <li>
+                            <label for="kk">3. Fotokopi Kartu Keluarga</label>
+                            <input type="file" id="kk" name="kk">
+                        </li>
+                        <li>
+                            <label for="akta">4. Fotokopi Akta Kelahiran</label>
+                            <input type="file" id="akta" name="akta">
+                        </li>
+                        <li>
+                            <label for="pas_foto">5. Pas Foto terbaru ukuran 3x4 </label>
+                            <input type="file" id="pas_foto" name="pas_foto">
+                        </li>
+                    </ul>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="form-row place-order" style="text-align: center;">
+            <button type="submit" class="button alt" name="pendaftaran_siswa_baru_submit"
+                    id="pendaftaran_siswa_baru_submit" value="Daftar" data-value="Daftar"
+                    style="width: 250px;">Daftar
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+$(document).ready(function() {
+    $('#place_order').click(function(e) {
+        e.preventDefault();  // Prevent the form from being submitted in the default way
+
+        $.ajax({
+            type: "POST",
+            url: "?action=create_registration",  // Your form's action URL
+            data: $("form[name='checkout']").serialize(),  // Serialize the form data
+            success: function(data){
+                window.location.href = "/checkout/success/";  // If the request is successful, redirect to the success URL
+            }
+        });
+    });
+});
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+{% load course_tags %}
+{% load static %}
+{% block content %}
+
+<section class="py-6 py-md-12 position-relative">
+<h1>Daftar Registrasi Siswa</h1>
+<table>
+    <tr>
+        <th>Nama</th>
+        <th>Email</th>
+        <!-- tambahkan kolom lainnya sesuai dengan field dalam model Anda -->
+    </tr>
+    {% for i in students %}
+    <tr>
+        <td>{{ i.nama }}</td>
+        <td>{{ i.email }}</td>
+        <!-- tambahkan data lainnya sesuai dengan field dalam model Anda -->
+    </tr>
+    {% endfor %}
+</table>
+</section>
+{% endblock %}

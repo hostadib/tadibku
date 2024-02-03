@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Payment Success{% endblock %}
+{% block content %}
+
+{% if payment_status == 'success' %}
+    <div class="container py-8 pylg-11">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 text-center">
+                <img src="{% static 'success.png' %}" alt="Success" class="img-fluid mb-4">
+                <header class="alert alert-success" role="alert">
+                    <h4 class="alert-heading">Payment Success</h4>
+                    <p>Thank you for your payment. Your transaction has been completed, and a receipt for your purchase has been emailed to you. You may log into your account at <a href="https://www.paypal.com/in/home">www.paypal.com/in/home</a> to view details of this transaction.</p>
+                    <hr>
+                    <p class="mb-0">Whenever you need to, be sure to logout from your account.</p>
+                </header>
+                <div class="row border border-info p-4">
+                     <h5>Payment Details</h5>
+                    <div class="col-md-6">
+                        <p><strong>Payment ID:</strong> {{ payment_id }}</p>
+
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Amount:</strong> {{ amount }}</p>
+                        <p><strong>Payment Status:</strong> {{ payment_status }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Payment Date:</strong> {{ payment_date }}</p>
+                    </div>
+                </div>
+                <a href="{% url 'home' %}" class="btn btn-primary">Go to Home</a>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 text-center">
+                <img src="{% static 'failure.png' %}" alt="Failure" class="img-fluid mb-4">
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Payment Failed</h4>
+                    <p>Sorry, your payment failed. Please try again.</p>
+                    <hr>
+                    <p class="mb-0">Whenever you need to, be sure to logout from your account.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+
+{% endblock %}
