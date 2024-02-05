@@ -2,6 +2,7 @@ import os.path
 from pathlib import Path
 
 import dotenv
+import django_on_heroku
 
 dotenv.load_dotenv()
 
@@ -13,7 +14,7 @@ SECRET_KEY = "django-insecure-@jya8@tq%l@#4y(nih3ac2ih72s5%823yd(7_-0@=!2e-y7z2q
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','django-env.eba-mpvgatm2.us-west-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['127.0.0.1','LMS.rehokuapp.com']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -71,7 +72,7 @@ WSGI_APPLICATION = "LMS.wsgi.application"
 
 DATABASES = {
     "default": {
-        'ENGINE': "django.db.backends.postgresql",
+        'ENGINE': "django.db.backends.postgresql_psycopg2",
         "NAME": os.environ['DB_NAME'],
         "USER": os.environ['DB_USER'],
         "PASSWORD": os.environ['DB_PASSWORD'],
@@ -111,7 +112,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-
+django_on_heroku.settings(locals())
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
